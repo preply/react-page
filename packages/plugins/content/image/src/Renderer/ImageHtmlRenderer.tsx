@@ -35,10 +35,8 @@ const ImageHtmlRenderer: React.FC<CellPluginComponentProps<ImageState>> = (
       )}
     </div>
   ) : (
-    <div>
-      <div className="react-page-plugins-content-image-placeholder">
-        <ImageIcon style={iconStyle} />
-      </div>
+    <div className="react-page-plugins-content-image-placeholder">
+      <ImageIcon style={iconStyle} />
     </div>
   );
 };

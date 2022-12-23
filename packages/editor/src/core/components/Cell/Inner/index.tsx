@@ -1,13 +1,9 @@
 import React from 'react';
-import {
-  getPluginCellSpacing,
-  normalizeCellSpacing,
-} from '../../../utils/getCellSpacing';
+import { getPluginCellSpacing } from '../../../utils/getCellSpacing';
 import {
   useCellData,
   useCellHasPlugin,
   useCellInnerDivStylingProps,
-  useCellSpacing,
   useCellSpacingProvider,
   useFocusCell,
   useIsEditMode,
@@ -33,20 +29,12 @@ const Inner: React.FC<{ nodeId: string }> = ({ nodeId }) => {
   const focus = useFocusCell(nodeId);
   const focused = useIsFocused(nodeId);
   const childrenIds = useNodeChildrenIds(nodeId);
-  const cellSpacing = useCellSpacing();
   const ref = React.useRef<HTMLDivElement>(null);
 
   const hasChildren = childrenIds.length > 0;
 
   const data = useCellData(nodeId);
   const pluginCellSpacing = getPluginCellSpacing(plugin, data);
-  const [Provider, providerValue] = useCellSpacingProvider(pluginCellSpacing);
-  let cellSpacingY = 0;
-  if (typeof pluginCellSpacing !== 'undefined' && pluginCellSpacing != null) {
-    cellSpacingY = normalizeCellSpacing(pluginCellSpacing)?.y ?? 0;
-  } else {
-    cellSpacingY = cellSpacing?.y ?? 0;
-  }
 
   const onClick = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -96,21 +84,7 @@ const Inner: React.FC<{ nodeId: string }> = ({ nodeId }) => {
           {...innerDivProps}
         >
           <PluginComponent nodeId={nodeId} hasChildren={hasChildren}>
-            {hasChildren ? (
-              <Provider value={providerValue}>
-                <div
-                  style={
-                    cellSpacingY !== 0
-                      ? { margin: `${-cellSpacingY / 2}px 0` }
-                      : undefined
-                  }
-                >
-                  {children}
-                </div>
-              </Provider>
-            ) : (
-              children
-            )}
+            {children}
             {insertAllowed ? (
               <InsertNewWithDefault
                 parentCellId={nodeId}
